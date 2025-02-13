@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -143,4 +144,37 @@ func DeleteIdea(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.SendSuccessResponse(w, http.StatusOK, "Idea Deleted Successfully")
+}
+
+func GetTopIdeas(w http.ResponseWriter, r *http.Request) {
+	var ideas []models.Idea
+
+	page, err := strconv.Atoi(r.URL.Query().Get("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
+	if err != nil || limit < 1 {
+		limit = 10
+	}
+	skip := (page - 1) * limit
+
+	cursor, err := config.DBCollections.Idea.Find(
+		context.Background(),
+		bson.M{},
+		options.Find().SetSort(bson.M{"upvotes": -1}).SetSkip(int64(skip)).SetLimit(int64(limit)),
+	)
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Ideas:"+err.Error())
+		return
+	}
+	defer cursor.Close(context.Background())
+
+	for cursor.Next(context.Background()) {
+		var idea models.Idea
+		cursor.Decode(&idea)
+		ideas = append(ideas, idea)
+	}
+
+	utils.SendSuccessResponse(w, http.StatusOK, ideas)
 }
