@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"Ideahub/config"
+	"Ideahub/middlewares"
 	"Ideahub/models"
 	"Ideahub/utils"
 	"context"
@@ -148,4 +149,43 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	response.AccessToken = accessToken
 	response.RefreshToken = refreshToken
 	utils.SendSuccessResponse(w, http.StatusOK, response)
+}
+
+func LogoutUser(w http.ResponseWriter, r *http.Request) {
+	userId, ok := r.Context().Value(middlewares.UIDKey).(string)
+	if !ok {
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "User ID not found in context")
+		return
+	}
+	filter := bson.M{"_id": userId}
+	update := bson.M{"$unset": bson.M{"refresh_token": ""}}
+
+	_, err := config.DBCollections.User.UpdateByID(context.Background(), filter, update)
+
+	if err == mongo.ErrNoDocuments {
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "Invalid User")
+		return
+	} else if err != nil {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Error Updating the db:"+err.Error())
+		return
+	}
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refresh_token",
+		Value:    "",
+		Expires:  time.Unix(0, 0),
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	})
+	http.SetCookie(w, &http.Cookie{
+		Name:     "access_token",
+		Value:    "",
+		Expires:  time.Unix(0, 0),
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	})
+	utils.SendSuccessResponse(w, http.StatusOK, nil)
 }
