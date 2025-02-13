@@ -152,16 +152,15 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogoutUser(w http.ResponseWriter, r *http.Request) {
-	userId, ok := r.Context().Value(middlewares.UIDKey).(string)
+	userId, ok := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
 	if !ok {
 		utils.SendErrorResponse(w, http.StatusUnauthorized, "User ID not found in context")
 		return
 	}
 	filter := bson.M{"_id": userId}
-	update := bson.M{"$unset": bson.M{"refresh_token": ""}}
+	update := bson.M{"$set": bson.M{"refresh_token": ""}}
 
-	_, err := config.DBCollections.User.UpdateByID(context.Background(), filter, update)
-
+	_, err := config.DBCollections.User.UpdateOne(context.Background(), filter, update)
 	if err == mongo.ErrNoDocuments {
 		utils.SendErrorResponse(w, http.StatusUnauthorized, "Invalid User")
 		return
@@ -169,6 +168,7 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) {
 		utils.SendErrorResponse(w, http.StatusBadRequest, "Error Updating the db:"+err.Error())
 		return
 	}
+
 	http.SetCookie(w, &http.Cookie{
 		Name:     "refresh_token",
 		Value:    "",
@@ -188,4 +188,79 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteLaxMode,
 	})
 	utils.SendSuccessResponse(w, http.StatusOK, nil)
+}
+
+func RefreshToken(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("refresh_token")
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "refresh_token Missing")
+		return
+	}
+
+	tokenString := cookie.Value
+
+	userID, err := utils.ValidateToken(tokenString)
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "Invalid Refresh Token")
+		return
+	}
+	userId, err := primitive.ObjectIDFromHex(userID)
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Could Not Cast user id to objectID")
+		return
+	}
+
+	var user models.User
+	err = config.DBCollections.User.FindOne(context.Background(), bson.M{"_id": userId}).Decode(&user)
+
+	if err == mongo.ErrNoDocuments {
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "User does not exists")
+		return
+	} else if err != nil {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Could not fetch User from DB:"+err.Error())
+		return
+	} else if user.RefreshToken == "" {
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "Unauthorized Request")
+		return
+	} else if user.RefreshToken != tokenString {
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "Refresh Token is Expired or Used")
+		return
+	}
+
+	newRefreshToken := utils.GenerateRefreshToken(userID)
+	newAccessToken := utils.GenerateAccessToken(userID)
+
+	_, updateErr := config.DBCollections.User.UpdateOne(context.Background(), bson.M{"_id": userId}, bson.M{"$set": bson.M{"refresh_token": newRefreshToken}})
+	if updateErr != nil {
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Unable to Refresh Token:"+updateErr.Error())
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "access_token",
+		Value:    newAccessToken,
+		HttpOnly: true,
+		Path:     "/",
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	})
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refresh_token",
+		Value:    newRefreshToken,
+		HttpOnly: true,
+		Path:     "/",
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	})
+	var response struct {
+		AccessToken  string
+		RefreshToken string
+	}
+	response.AccessToken = newAccessToken
+	response.RefreshToken = newRefreshToken
+	utils.SendSuccessResponse(w, http.StatusOK, response)
 }
