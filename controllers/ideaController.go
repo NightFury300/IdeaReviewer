@@ -83,8 +83,17 @@ func GetIdea(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var response struct {
-		Idea     models.Idea
-		Comments []models.Comment
+		Idea      models.Idea
+		Upvotes   int
+		Downvotes int
+		Comments  []models.Comment
+	}
+
+	response.Upvotes, response.Downvotes, err = GetVotesCount(ideaID)
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Votes:"+err.Error())
+		return
 	}
 
 	response.Idea = idea
@@ -166,6 +175,13 @@ func DeleteIdea(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Delete Replies:"+err.Error())
+		return
+	}
+
+	err = DeleteVotesByIdeaID(ideaID)
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Delete Votes:"+err.Error())
 		return
 	}
 

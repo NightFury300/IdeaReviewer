@@ -20,8 +20,6 @@ type Idea struct {
 	UserID      primitive.ObjectID `bson:"user_id" json:"user_id"`
 	Title       string             `bson:"title" json:"title"`
 	Description string             `bson:"description" json:"description"`
-	Upvotes     int                `bson:"upvotes" json:"upvotes"`
-	Downvotes   int                `bson:"downvotes" json:"downvotes"`
 	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
 	UpdatedAt   time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty"`
 }
@@ -30,7 +28,7 @@ type Vote struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id"`
 	UserID   primitive.ObjectID `bson:"user_id" json:"user_id"`
 	IdeaID   primitive.ObjectID `bson:"idea_id" json:"idea_id"`
-	VoteType int                `bson:"vote_type" json:"vote_type"`
+	VoteType string             `bson:"vote_type" json:"vote_type"`
 }
 
 type Comment struct {

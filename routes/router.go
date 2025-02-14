@@ -11,6 +11,7 @@ func InitRouter() *mux.Router {
 	InitIdeaRouter(r)
 	InitCommentRouter(r)
 	InitReplyRouter(r)
+	InitVoteRouter(r)
 	//r.HandleFunc("/", controllers.RegisterUser).Methods("Get")
 	return r
 }
