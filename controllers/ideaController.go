@@ -82,7 +82,20 @@ func GetIdea(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.SendSuccessResponse(w, http.StatusOK, idea)
+	var response struct {
+		Idea     models.Idea
+		Comments []models.Comment
+	}
+
+	response.Idea = idea
+	response.Comments, err = FetchParentComments(ideaID)
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Comments:"+err.Error())
+		return
+	}
+
+	utils.SendSuccessResponse(w, http.StatusOK, response)
 }
 
 func UpdateIdea(w http.ResponseWriter, r *http.Request) {
@@ -140,6 +153,19 @@ func DeleteIdea(w http.ResponseWriter, r *http.Request) {
 	_, deleteErr := config.DBCollections.Idea.DeleteOne(context.Background(), bson.M{"_id": ideaID})
 	if deleteErr != nil {
 		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Delete Idea:"+deleteErr.Error())
+		return
+	}
+	err = DeleteCommentsByIdeaID(ideaID)
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Delete Comments:"+err.Error())
+		return
+	}
+
+	err = DeleteRepliesByIdeaID(ideaID)
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Delete Replies:"+err.Error())
 		return
 	}
 

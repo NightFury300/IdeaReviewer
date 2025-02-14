@@ -9,6 +9,8 @@ func InitRouter() *mux.Router {
 
 	InitUserRouter(r)
 	InitIdeaRouter(r)
+	InitCommentRouter(r)
+	InitReplyRouter(r)
 	//r.HandleFunc("/", controllers.RegisterUser).Methods("Get")
 	return r
 }
