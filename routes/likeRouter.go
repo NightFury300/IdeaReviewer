@@ -1,5 +1,6 @@
 package routes
 
+/*
 import (
 	"Ideahub/controllers"
 	"Ideahub/middlewares"
@@ -11,3 +12,4 @@ import (
 func InitLikeRouter(r *mux.Router) {
 	r.Handle("/likes", middlewares.VerifyJWT(http.HandlerFunc(controllers.ToggleLike))).Methods("POST")
 }
+*/

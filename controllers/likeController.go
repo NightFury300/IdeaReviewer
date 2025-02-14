@@ -1,5 +1,6 @@
 package controllers
 
+/*
 import (
 	"Ideahub/config"
 	"Ideahub/middlewares"
@@ -63,3 +64,8 @@ func GetLikeCount(targetID primitive.ObjectID) (int, error) {
 	}
 	return int(count), nil
 }
+
+func DeleteLikesByTargetID(targetID primitive.ObjectID) error {
+	_, err := config.DBCollections.Like.DeleteMany(context.Background(), bson.M{"target_id": targetID})
+	return err
+}*/

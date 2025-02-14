@@ -23,10 +23,20 @@ func CreateReply(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if reply.Text == "" || reply.CommentID == primitive.NilObjectID || reply.IdeaID == primitive.NilObjectID {
+	if reply.Text == "" || reply.CommentID == primitive.NilObjectID {
 		utils.SendErrorResponse(w, http.StatusBadRequest, "Please Provide all the fields")
 		return
 	}
+
+	var comment models.Comment
+	err = config.DBCollections.Comment.FindOne(context.Background(), bson.M{"_id": reply.CommentID}).Decode(&comment)
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Invalid Comment ID")
+		return
+	}
+
+	reply.IdeaID = comment.IdeaID
 
 	userID := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
 
@@ -43,7 +53,7 @@ func CreateReply(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetReplies(w http.ResponseWriter, r *http.Request) {
-	var replies []models.Reply
+	var result []models.Reply
 
 	commentID, err := primitive.ObjectIDFromHex(mux.Vars(r)["id"])
 	if err != nil {
@@ -61,10 +71,22 @@ func GetReplies(w http.ResponseWriter, r *http.Request) {
 	for cursor.Next(context.Background()) {
 		var reply models.Reply
 		cursor.Decode(&reply)
-		replies = append(replies, reply)
+
+		/*likeCount, err := GetLikeCount(reply.ID)
+		if err != nil {
+			utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Like Count:"+err.Error())
+			return
+		}
+*/
+		/*replyWithLikes := map[string]interface{}{
+			"reply":     reply,
+			//"likeCount": likeCount,
+		}*/
+
+		result = append(result, reply)
 	}
 
-	utils.SendSuccessResponse(w, http.StatusOK, replies)
+	utils.SendSuccessResponse(w, http.StatusOK, result)
 }
 
 func DeleteReply(w http.ResponseWriter, r *http.Request) {

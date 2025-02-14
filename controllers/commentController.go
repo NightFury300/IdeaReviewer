@@ -70,8 +70,8 @@ func DeleteComment(w http.ResponseWriter, r *http.Request) {
 	utils.SendSuccessResponse(w, http.StatusOK, "Comment Deleted Successfully")
 }
 
-func FetchParentComments(ideaId primitive.ObjectID) ([]map[string]interface{}, error) {
-	var result []map[string]interface{}
+func FetchParentComments(ideaId primitive.ObjectID) ([]models.Comment, error) {
+	var comments []models.Comment
 
 	cursor, err := config.DBCollections.Comment.Find(context.Background(), bson.M{"idea_id": ideaId})
 	if err != nil {
@@ -82,21 +82,10 @@ func FetchParentComments(ideaId primitive.ObjectID) ([]map[string]interface{}, e
 	for cursor.Next(context.Background()) {
 		var comment models.Comment
 		cursor.Decode(&comment)
-
-		likeCount, err := GetLikeCount(comment.ID)
-		if err != nil {
-			return nil, err
-		}
-
-		commentWithLikes := map[string]interface{}{
-			"comment":   comment,
-			"likeCount": likeCount,
-		}
-
-		result = append(result, commentWithLikes)
+		comments = append(comments, comment)
 	}
 
-	return result, nil
+	return comments, nil
 }
 
 func DeleteCommentsByIdeaID(ideaID primitive.ObjectID) error {
