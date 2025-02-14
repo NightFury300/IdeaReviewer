@@ -12,12 +12,12 @@ import (
 )
 
 type dbCollections struct {
-	User        *mongo.Collection
-	Idea        *mongo.Collection
-	Vote        *mongo.Collection
-	Comment     *mongo.Collection
-	CommentLike *mongo.Collection
-	Reply       *mongo.Collection
+	User    *mongo.Collection
+	Idea    *mongo.Collection
+	Vote    *mongo.Collection
+	Comment *mongo.Collection
+	Like    *mongo.Collection
+	Reply   *mongo.Collection
 }
 
 // var DB *mongo.Database
@@ -40,12 +40,12 @@ func ConnectToDB() {
 	}
 
 	DBCollections = dbCollections{
-		User:        client.Database(dbName).Collection("users"),
-		Idea:        client.Database(dbName).Collection("ideas"),
-		Vote:        client.Database(dbName).Collection("votes"),
-		Comment:     client.Database(dbName).Collection("comments"),
-		CommentLike: client.Database(dbName).Collection("comment_likes"),
-		Reply:       client.Database(dbName).Collection("replies"),
+		User:    client.Database(dbName).Collection("users"),
+		Idea:    client.Database(dbName).Collection("ideas"),
+		Vote:    client.Database(dbName).Collection("votes"),
+		Comment: client.Database(dbName).Collection("comments"),
+		Like:    client.Database(dbName).Collection("likes"),
+		Reply:   client.Database(dbName).Collection("replies"),
 	}
 	//DB = client.Database(dbName)
 	fmt.Println("Successfully Connected to DB")

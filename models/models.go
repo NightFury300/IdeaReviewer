@@ -36,15 +36,14 @@ type Comment struct {
 	UserID    primitive.ObjectID `bson:"user_id" json:"user_id"`
 	IdeaID    primitive.ObjectID `bson:"idea_id" json:"idea_id"`
 	Text      string             `bson:"text" json:"text"`
-	Likes     int                `bson:"likes" json:"likes"`
 	CreatedAt time.Time          `bson:"created_at" json:"created_at"`
 	UpdatedAt time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty"`
 }
 
-type CommentLike struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	UserID    primitive.ObjectID `bson:"user_id" json:"user_id"`
-	CommentID primitive.ObjectID `bson:"comment_id" json:"comment_id"`
+type Like struct {
+	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	UserID   primitive.ObjectID `bson:"user_id" json:"user_id"`
+	TargetID primitive.ObjectID `bson:"target_id" json:"target_id"`
 }
 
 type Reply struct {

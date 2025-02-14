@@ -86,7 +86,7 @@ func GetIdea(w http.ResponseWriter, r *http.Request) {
 		Idea      models.Idea
 		Upvotes   int
 		Downvotes int
-		Comments  []models.Comment
+		Comments  interface{}
 	}
 
 	response.Upvotes, response.Downvotes, err = GetVotesCount(ideaID)
@@ -98,7 +98,6 @@ func GetIdea(w http.ResponseWriter, r *http.Request) {
 
 	response.Idea = idea
 	response.Comments, err = FetchParentComments(ideaID)
-
 	if err != nil {
 		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Comments:"+err.Error())
 		return
