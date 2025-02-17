@@ -2,7 +2,7 @@ import React from 'react'
 import { registerUser } from '../services/userAPI';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import AuthButtons from '../components/AuthButtons';
+import AuthButtons from '../components/AuthComponents/AuthButtons';
 
 function SignUp() {
   const [email, setEmail] = React.useState('');

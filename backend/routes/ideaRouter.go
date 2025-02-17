@@ -9,7 +9,8 @@ import (
 )
 
 func InitIdeaRouter(r *mux.Router) {
-	r.Handle("/ideas/top", middlewares.VerifyJWT(http.HandlerFunc(controllers.GetTopIdeas))).Methods("GET")
+	r.HandleFunc("/ideas/top", controllers.GetTopIdeas).Methods("GET")
+
 	r.Handle("/ideas", middlewares.VerifyJWT(http.HandlerFunc(controllers.CreateIdea))).Methods("POST")
 	r.Handle("/ideas", middlewares.VerifyJWT(http.HandlerFunc(controllers.GetUserIdeas))).Methods("GET")
 	r.Handle("/ideas/{id}", middlewares.VerifyJWT(http.HandlerFunc(controllers.GetIdea))).Methods("GET")

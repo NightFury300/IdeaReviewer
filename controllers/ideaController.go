@@ -47,7 +47,7 @@ func CreateIdea(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUserIdeas(w http.ResponseWriter, r *http.Request) {
-	var ideas []map[string]interface{}
+	var ideas []models.Idea
 
 	userID := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
 
@@ -61,27 +61,7 @@ func GetUserIdeas(w http.ResponseWriter, r *http.Request) {
 	for cursor.Next(context.Background()) {
 		var idea models.Idea
 		cursor.Decode(&idea)
-
-		upvotes, downvotes, err := GetVotesCount(idea.ID)
-		if err != nil {
-			utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Votes:"+err.Error())
-			return
-		}
-
-		comments, err := FetchParentComments(idea.ID)
-		if err != nil {
-			utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Comments:"+err.Error())
-			return
-		}
-
-		ideaWithDetails := map[string]interface{}{
-			"idea":      idea,
-			"upvotes":   upvotes,
-			"downvotes": downvotes,
-			"comments":  len(comments),
-		}
-
-		ideas = append(ideas, ideaWithDetails)
+		ideas = append(ideas, idea)
 	}
 
 	utils.SendSuccessResponse(w, http.StatusOK, ideas)
@@ -208,7 +188,7 @@ func DeleteIdea(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetTopIdeas(w http.ResponseWriter, r *http.Request) {
-	var ideas []map[string]interface{}
+	var ideas []models.Idea
 
 	page, err := strconv.Atoi(r.URL.Query().Get("page"))
 	if err != nil || page < 1 {
@@ -234,27 +214,7 @@ func GetTopIdeas(w http.ResponseWriter, r *http.Request) {
 	for cursor.Next(context.Background()) {
 		var idea models.Idea
 		cursor.Decode(&idea)
-
-		upvotes, downvotes, err := GetVotesCount(idea.ID)
-		if err != nil {
-			utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Votes:"+err.Error())
-			return
-		}
-
-		comments, err := FetchParentComments(idea.ID)
-		if err != nil {
-			utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Comments:"+err.Error())
-			return
-		}
-
-		ideaWithDetails := map[string]interface{}{
-			"idea":      idea,
-			"upvotes":   upvotes,
-			"downvotes": downvotes,
-			"comments":  len(comments),
-		}
-
-		ideas = append(ideas, ideaWithDetails)
+		ideas = append(ideas, idea)
 	}
 
 	utils.SendSuccessResponse(w, http.StatusOK, ideas)

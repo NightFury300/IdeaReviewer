@@ -1,3 +1,3 @@
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "./AuthComponents/ProtectedRoute";
 
 export {ProtectedRoute}

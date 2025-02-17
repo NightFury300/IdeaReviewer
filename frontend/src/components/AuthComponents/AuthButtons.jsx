@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-const AuthButtons = () => {
+const AuthButtons = ({haveBgColors = false}) => {
   const location = useLocation();
 
   return (
@@ -8,7 +8,7 @@ const AuthButtons = () => {
   <Link
     to="/login"
     className={`px-4 py-2 rounded-lg font-medium transition duration-200 ${
-      location.pathname === "/login"
+      location.pathname === "/login" || haveBgColors
         ? "bg-blue-500 text-white"
         : "bg-gray-200 hover:bg-gray-300"
     }`}
@@ -18,7 +18,7 @@ const AuthButtons = () => {
   <Link
     to="/signup"
     className={`px-4 py-2 rounded-lg font-medium transition duration-200 ${
-      location.pathname === "/signup"
+      location.pathname === "/signup" || haveBgColors
         ? "bg-blue-500 text-white"
         : "bg-gray-200 hover:bg-gray-300"
     }`}

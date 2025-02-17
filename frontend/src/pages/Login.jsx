@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { login } from '../store/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { loginUser } from '../services/userAPI'
-import AuthButtons from '../components/AuthButtons'
+import AuthButtons from '../components/AuthComponents/AuthButtons'
 
 function Login() {
   const dispatch = useDispatch()

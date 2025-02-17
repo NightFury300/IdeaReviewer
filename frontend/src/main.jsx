@@ -3,7 +3,6 @@ import store from './store/store.js'
 import {Provider} from 'react-redux'
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from 'react-router-dom'
 import {Login,SignUp,Dashboard, Layout} from './pages/index.js'
-import {ProtectedRoute} from './components/index.js'
 import './main.css'
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -11,7 +10,7 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path='' element={<Navigate to="/dashboard" replace />}/>
     <Route path='login' element={<Login/>}/>
     <Route path='signup' element={<SignUp/>}/>
-    <Route path='dashboard' element={<ProtectedRoute element={<Dashboard/>}/>}/>
+    <Route path='dashboard' element={<Dashboard/>}/>
   </Route>
 ))
 
