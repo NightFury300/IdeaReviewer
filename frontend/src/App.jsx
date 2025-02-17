@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import axiosInstance from "./utils/axiosInstance";
-import { loginUser } from "./services/api";
+import { loginUser } from "./services/userAPI";
 
 function App() {
   const [loading,setLoading] = useState(true);

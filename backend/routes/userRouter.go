@@ -16,4 +16,5 @@ func InitUserRouter(r *mux.Router) {
 
 	//protected-routes
 	userRouter.Handle("/logout", middlewares.VerifyJWT(http.HandlerFunc(controllers.LogoutUser))).Methods("POST")
+	userRouter.Handle("/profile", middlewares.VerifyJWT(http.HandlerFunc(controllers.GetProfile))).Methods("GET")
 }

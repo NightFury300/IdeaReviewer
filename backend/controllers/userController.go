@@ -7,6 +7,7 @@ import (
 	"Ideahub/utils"
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 
@@ -17,7 +18,6 @@ import (
 
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
-
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		utils.SendErrorResponse(w, http.StatusBadRequest, "Invalid Request Body")
@@ -96,7 +96,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	err := config.DBCollections.User.FindOne(context.Background(), bson.M{"email": reqBody.Email}).Decode(&user)
 
 	if err == mongo.ErrNoDocuments {
-		utils.SendErrorResponse(w, http.StatusUnauthorized, "Invalid email or password")
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "Invalid Email or Password")
 		return
 	} else if err != nil {
 		utils.SendErrorResponse(w, http.StatusInternalServerError, "Database error: "+err.Error())
@@ -191,6 +191,7 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func RefreshToken(w http.ResponseWriter, r *http.Request) {
+	log.Println("Refresh Token Called")
 	cookie, err := r.Cookie("refresh_token")
 
 	if err != nil {
@@ -262,5 +263,15 @@ func RefreshToken(w http.ResponseWriter, r *http.Request) {
 	}
 	response.AccessToken = newAccessToken
 	response.RefreshToken = newRefreshToken
+	utils.SendSuccessResponse(w, http.StatusOK, response)
+}
+
+func GetProfile(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
+
+	var response struct {
+		ID primitive.ObjectID `json:"_id"`
+	}
+	response.ID = userID
 	utils.SendSuccessResponse(w, http.StatusOK, response)
 }

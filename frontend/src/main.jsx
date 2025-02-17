@@ -1,13 +1,14 @@
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
 import store from './store/store.js'
 import {Provider} from 'react-redux'
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
-import {Welcome,Login,SignUp,Dashboard,ProtectedRoute, Layout} from './components/index.js'
+import {Login,SignUp,Dashboard, Layout} from './pages/index.js'
+import {ProtectedRoute} from './components/index.js'
+import './main.css'
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={<Layout/>}>
-    <Route path='' element={<Welcome/>}/>
+    <Route path='' element={<ProtectedRoute element={<Dashboard/>}/>}/>
     <Route path='login' element={<Login/>}/>
     <Route path='signup' element={<SignUp/>}/>
     <Route path='dashboard' element={<ProtectedRoute element={<Dashboard/>}/>}/>
