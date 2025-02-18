@@ -39,8 +39,8 @@ function EditIdea() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      <h1 className="text-2xl font-bold mb-6">Edit Idea</h1>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto">
+      <h1 className="text-2xl font-bold mb-6">Edit Idea</h1>
         <div className="mb-4">
           <label htmlFor="title" className="block text-sm font-semibold text-gray-700">Title</label>
           <input
@@ -66,7 +66,7 @@ function EditIdea() {
         <div className="flex justify-end gap-4">
           <button
             type="button"
-            onClick={() => navigate('/my-ideas')} 
+            onClick={() => navigate('/ideas')} 
             className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
           >
             Cancel

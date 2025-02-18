@@ -33,7 +33,7 @@ function Layout() {
           </Link>
           <Link
             to="/ideas"
-            className={`${isActive('/profile')} hover:text-blue-500 transition`}
+            className={`${isActive('/ideas')} hover:text-blue-500 transition`}
           >
             My Ideas
           </Link>
@@ -41,12 +41,10 @@ function Layout() {
         {isLoggedIn ? <LogoutButton/> : <AuthButtons/>}
       </header>
 
-      {/* Page Content */}
       <main className="flex-grow p-8">
         <Outlet />
       </main>
 
-      {/* Footer */}
       <footer className="bg-gray-200 text-gray-700 text-center py-4 text-sm">
         © {new Date().getFullYear()} IdeaReviewer. All rights reserved.
       </footer>

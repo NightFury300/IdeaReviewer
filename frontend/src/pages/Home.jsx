@@ -23,7 +23,8 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      <div className="flex justify-end mb-6">
+      <div className="flex justify-between mb-6">
+      <h1 className="text-2xl font-bold mb-6">Home</h1>
         <button
           onClick={() => navigate("/ideas/new")}
           className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 shadow-md transition"

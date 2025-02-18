@@ -5,7 +5,7 @@ import IdeaCard from '../components/IdeaCard.jsx';
 import ConfirmationModal from '../components/ConfirmationModal.jsx';
 import { getUserIdeas, deleteIdea } from '../services/ideasAPI.js';
 
-function MyIdeasPage() {
+function MyIdeas() {
   const [ideas, setIdeas] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ideaToDelete, setIdeaToDelete] = useState(null);
@@ -56,7 +56,7 @@ function MyIdeasPage() {
     <div className="min-h-screen bg-gray-50 p-8">
       <h1 className="text-2xl font-bold mb-6">My Ideas</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {ideas.length > 0 ? (
+        {ideas?.length > 0 ? (
           ideas.map((idea) => (
             <div key={idea.idea.id} className="relative">
               <IdeaCard ideaData={idea} />
@@ -92,4 +92,4 @@ function MyIdeasPage() {
   );
 }
 
-export default MyIdeasPage;
+export default MyIdeas;
