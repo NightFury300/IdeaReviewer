@@ -23,7 +23,8 @@ axiosInstance.interceptors.response.use(
         originalRequest._retry = true;
       try {
         await axios.post(import.meta.env.VITE_BACKEND_URL + "/user/refresh-token", {}, { withCredentials: true });
-
+        console.log("Token Refreshed");
+        
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         store.dispatch(logout());

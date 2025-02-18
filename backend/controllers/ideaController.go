@@ -103,10 +103,10 @@ func GetIdea(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var response struct {
-		Idea      models.Idea
-		Upvotes   int
-		Downvotes int
-		Comments  interface{}
+		Idea      models.Idea `json:"idea"`
+		Upvotes   int         `json:"upvotes"`
+		Downvotes int         `json:"downvotes"`
+		Comments  interface{} `json:"comments"`
 	}
 
 	response.Upvotes, response.Downvotes, err = GetVotesCount(ideaID)

@@ -32,10 +32,10 @@ function Layout() {
             Home
           </Link>
           <Link
-            to="/profile"
+            to="/ideas"
             className={`${isActive('/profile')} hover:text-blue-500 transition`}
           >
-            My Profile
+            My Ideas
           </Link>
         </nav>
         {isLoggedIn ? <LogoutButton/> : <AuthButtons/>}

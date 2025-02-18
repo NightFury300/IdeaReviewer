@@ -1,7 +1,6 @@
 import React from 'react';
 
 function IdeaCard({ ideaData }) {
-    console.log(ideaData);
     
     const { idea, upvotes, downvotes, comments } = ideaData;
     const { title, description } = idea

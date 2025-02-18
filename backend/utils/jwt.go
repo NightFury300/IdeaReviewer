@@ -22,10 +22,10 @@ func GenerateAccessToken(userID string) string {
 }
 
 func GenerateRefreshToken(userID string) string {
-	expiryInMinutes, _ := strconv.Atoi(os.Getenv("REFRESH_TOKEN_EXPIRY_HOURS"))
+	expiryInHours, _ := strconv.Atoi(os.Getenv("REFRESH_TOKEN_EXPIRY_HOURS"))
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userID": userID,
-		"exp":    time.Now().Add(time.Hour * time.Duration(expiryInMinutes)).Unix(),
+		"exp":    time.Now().Add(time.Hour * time.Duration(expiryInHours)).Unix(),
 	})
 	tokenString, _ := token.SignedString([]byte(secretKey))
 	return tokenString
