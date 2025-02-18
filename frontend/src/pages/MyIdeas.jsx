@@ -63,13 +63,13 @@ function MyIdeas() {
               <div className="absolute top-2 right-2 flex gap-2">
                 <button
                   onClick={() => handleEdit(idea.idea.id)}
-                  className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 transition"
+                  className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 transition cursor-pointer"
                 >
                   <Edit size={16} />
                 </button>
                 <button
                   onClick={() => handleDelete(idea.idea.id)}
-                  className="bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition"
+                  className="bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition cursor-pointer"
                 >
                   <Trash size={16} />
                 </button>

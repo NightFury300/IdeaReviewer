@@ -29,7 +29,7 @@ function ReplyCard({ reply, onDelete }) {
             e.stopPropagation();
             handleDelete();
           }} 
-          className="text-red-500 text-sm bg-gray-200 px-2 py-1 rounded-md ml-2"
+          className="text-red-500 text-sm bg-gray-200 px-2 py-1 rounded-md ml-2 cursor-pointer"
         >
           Delete
         </button>

@@ -67,13 +67,13 @@ function EditIdea() {
           <button
             type="button"
             onClick={() => navigate('/ideas')} 
-            className="bg-gray-300 text-gray-800 px-4 py-2 rounded"
+            className="bg-gray-300 text-gray-800 px-4 py-2 rounded cursor-pointer"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer"
           >
             Save Changes
           </button>

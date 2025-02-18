@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -29,7 +30,7 @@ func CreateVote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if reqBody.IdeaID == primitive.NilObjectID || (reqBody.VoteType != "-1" && reqBody.VoteType != "1") {
-		utils.SendErrorResponse(w, http.StatusBadRequest, "Please a valid Idea Id and Vote Type")
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Please provide a valid Idea Id and Vote Type")
 		return
 	}
 
@@ -66,21 +67,22 @@ func CreateVote(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteVote(w http.ResponseWriter, r *http.Request) {
-	var reqBody struct {
-		IdeaID primitive.ObjectID `json:"idea_id"`
-	}
-	userID := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
-	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
-		utils.SendErrorResponse(w, http.StatusBadRequest, "Invalid Request Body")
+
+	IdeaID, err := primitive.ObjectIDFromHex(mux.Vars(r)["id"])
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Could not find Idea ID")
 		return
 	}
 
-	if reqBody.IdeaID == primitive.NilObjectID {
+	userID := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
+
+	if IdeaID == primitive.NilObjectID {
 		utils.SendErrorResponse(w, http.StatusBadRequest, "Please Provide Idea ID")
 		return
 	}
 
-	res, err := config.DBCollections.Vote.DeleteOne(context.Background(), bson.M{"user_id": userID, "idea_id": reqBody.IdeaID})
+	res, err := config.DBCollections.Vote.DeleteOne(context.Background(), bson.M{"user_id": userID, "idea_id": IdeaID})
 	if err != nil {
 		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Delete Vote:"+err.Error())
 		return
@@ -92,6 +94,41 @@ func DeleteVote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.SendSuccessResponse(w, http.StatusOK, "Vote Deleted Successfully")
+}
+
+func GetVote(w http.ResponseWriter, r *http.Request) {
+	IdeaID, err := primitive.ObjectIDFromHex(mux.Vars(r)["id"])
+
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Could not find Idea ID")
+		return
+	}
+
+	userID := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
+
+	var existingVote models.Vote
+	err = config.DBCollections.Vote.FindOne(context.Background(), bson.M{"user_id": userID, "idea_id": IdeaID}).Decode(&existingVote)
+
+	var response struct {
+		HasVoted bool   `json:"has_voted"`
+		VoteType string `json:"vote_type"`
+	}
+
+	if err == mongo.ErrNoDocuments {
+		response.HasVoted = false
+	} else if err != nil {
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Vote:"+err.Error())
+		return
+	} else {
+		response.HasVoted = true
+		if existingVote.VoteType == "1" {
+			response.VoteType = "upvote"
+		} else if existingVote.VoteType == "-1" {
+			response.VoteType = "downvote"
+		}
+	}
+
+	utils.SendSuccessResponse(w, http.StatusOK, response)
 }
 
 func DeleteVotesByIdeaID(ideaID primitive.ObjectID) error {

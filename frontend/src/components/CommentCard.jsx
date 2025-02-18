@@ -9,11 +9,12 @@ import UserTag from './UserTag.jsx';
 function CommentCard({ comment, onDelete }) {
   const [showReplies, setShowReplies] = useState(false);
   const [replies, setReplies] = useState([]);
-  const [newReply, setNewReply] = useState("");
+  const [newReply, setNewReply] = useState('');
   const [loadingReplies, setLoadingReplies] = useState(false);
-  const navigate = useNavigate()
-  const currentUserId = useSelector(state => state.auth.userData?.userId) || "";
-  const isLoggedIn = useSelector(state => state.auth.loginStatus)
+  const navigate = useNavigate();
+  const currentUserId = useSelector(state => state.auth.userData?.userId) || '';
+  const isLoggedIn = useSelector(state => state.auth.loginStatus);
+
   const fetchReplies = async () => {
     if (!showReplies) {
       setLoadingReplies(true);
@@ -37,8 +38,8 @@ function CommentCard({ comment, onDelete }) {
     if (!newReply.trim()) return;
     try {
       await createReply(comment.id, newReply);
-      navigate(0)
-      setNewReply("");
+      navigate(0);
+      setNewReply('');
     } catch (error) {
       console.error('Error adding reply:', error);
     }
@@ -47,29 +48,34 @@ function CommentCard({ comment, onDelete }) {
   const handleDeleteComment = async () => {
     try {
       await deleteComment(comment.id);
-      onDelete(comment.id);
+      onDelete(comment.id)
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
   };
 
   const handleDeleteReply = () => {
-    navigate(0)
+    navigate(0);
   };
 
   return (
-    <div className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
-    <UserTag username={comment?.username}/>
-      <div className="flex justify-between items-center cursor-pointer" onClick={fetchReplies}>
-        <p className="text-gray-800">-{comment.text}</p>
+    <div
+      className="bg-gray-100 p-4 rounded-lg shadow-md mb-4 transition-all duration-200 ease-in-out hover:bg-gray-200 hover:shadow-lg"
+    >
+      <UserTag username={comment?.username} />
+      <div
+        className="flex justify-between items-center cursor-pointer transition-all duration-200 hover:text-gray-700"
+        onClick={fetchReplies}
+      >
+        <p className="text-gray-800 transition-all duration-200">-{comment.text}</p>
 
         {comment.user_id === currentUserId && (
-          <button 
+          <button
             onClick={(e) => {
               e.stopPropagation();
               handleDeleteComment();
-            }} 
-            className="text-red-500 text-sm bg-gray-200 px-2 py-1 rounded-md ml-2"
+            }}
+            className="text-red-500 text-sm bg-gray-200 px-2 py-1 rounded-md ml-2 cursor-pointer transition-all duration-200 hover:bg-gray-300"
           >
             Delete
           </button>
@@ -86,31 +92,32 @@ function CommentCard({ comment, onDelete }) {
                 <ReplyCard key={reply.id} reply={reply} onDelete={handleDeleteReply} />
               ))
             ) : (
-              <p>No replies yet.</p>
+              <p className="text-gray-500">No replies yet.</p>
             )
           )}
-          {isLoggedIn && (
-          <div className="mt-4">
-            <textarea
-              value={newReply}
-              onChange={handleReplyChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Write a reply..."
-            />
+          {isLoggedIn ? (
+            <div className="mt-4">
+              <textarea
+                value={newReply}
+                onChange={handleReplyChange}
+                className="w-full p-2 border border-gray-300 rounded-md transition-all duration-200 focus:ring-2 focus:ring-blue-400"
+                placeholder="Write a reply..."
+              />
+              <button
+                onClick={handleAddReply}
+                className="mt-2 text-white bg-blue-500 px-4 py-2 rounded-md cursor-pointer transition-all duration-200 hover:bg-blue-600"
+              >
+                Add Reply
+              </button>
+            </div>
+          ) : (
             <button
-              onClick={handleAddReply}
-              className="mt-2 text-white bg-blue-500 px-4 py-2 rounded-md"
-            >
-              Add Reply
-            </button>
-          </div>
-          )}
-          {!isLoggedIn &&(<button
-              onClick={() => {navigate('/login')}}
-              className="mt-2 text-white bg-blue-500 px-4 py-2 rounded-md"
+              onClick={() => navigate('/login')}
+              className="mt-2 text-white bg-blue-500 px-4 py-2 rounded-md cursor-pointer transition-all duration-200 hover:bg-blue-600"
             >
               Login to Reply
-            </button>)}
+            </button>
+          )}
         </div>
       )}
     </div>

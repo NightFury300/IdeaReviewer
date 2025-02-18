@@ -48,13 +48,13 @@ function PostIdea() {
         <div className="flex justify-end gap-3">
           <button
             onClick={() => navigate(-1)}
-            className="bg-gray-300 hover:bg-gray-400 text-black font-medium py-2 px-4 rounded-lg transition duration-200"
+            className="bg-gray-300 hover:bg-gray-400 text-black font-medium py-2 px-4 rounded-lg transition duration-200 cursor-pointer"
           >
             Cancel
           </button>
           <button
             onClick={handlePostIdea}
-            className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+            className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 cursor-pointer"
           >
             Post Idea
           </button>
