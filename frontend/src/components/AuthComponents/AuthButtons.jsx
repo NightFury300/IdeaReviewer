@@ -1,8 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 
-const AuthButtons = ({haveBgColors = false}) => {
+const AuthButtons = () => {
   const location = useLocation();
 
+  const haveBgColors = !(location.pathname === "/login" || location.pathname === "/signup");
   return (
     <div className="flex gap-4 mb-6">
   <Link

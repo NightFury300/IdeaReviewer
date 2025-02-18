@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import IdeaCard from '../components/IdeaCard.jsx';
-import LogoutButton from '../components/AuthComponents/LogoutButton.jsx';
 import { getTopIdeas } from '../services/ideasAPI.js';
 
-function Dashboard() {
+function Home() {
   const [ideas, setIdeas] = useState([]);
 
   useEffect(() => {
@@ -22,7 +21,6 @@ function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <h1 className="text-3xl font-semibold text-gray-800 mb-6">Dashboard</h1>
-      <LogoutButton />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {ideas.length > 0 ? (
           ideas.map((idea) => (
@@ -38,4 +36,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Home;

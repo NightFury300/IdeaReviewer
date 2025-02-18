@@ -1,8 +1,6 @@
 import React from 'react'
 import { registerUser } from '../services/userAPI';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import AuthButtons from '../components/AuthComponents/AuthButtons';
 
 function SignUp() {
   const [email, setEmail] = React.useState('');
@@ -41,7 +39,6 @@ function SignUp() {
 
   return (
     <div className="flex flex-col items-center p-8">
-    <AuthButtons />
     <form
       className="flex flex-col gap-4 w-80 bg-white shadow-md rounded-lg p-6"
       onSubmit={(e) => {

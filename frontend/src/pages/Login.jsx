@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import { login } from '../store/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { loginUser } from '../services/userAPI'
-import AuthButtons from '../components/AuthComponents/AuthButtons'
 
 function Login() {
   const dispatch = useDispatch()
@@ -16,7 +15,7 @@ function Login() {
     try {
       let data = await loginUser({ email, password })
       dispatch(login({ userId: data._id }))
-      navigate("/dashboard")
+      navigate("/")
     } catch (error) {
       setLoginError(error.message)
     }
@@ -24,7 +23,6 @@ function Login() {
 
   return (
     <div className="flex flex-col items-center p-8">
-  <AuthButtons />
   <form
     className="flex flex-col gap-4 w-80 bg-white shadow-md rounded-lg p-6"
     onSubmit={(e) => {
