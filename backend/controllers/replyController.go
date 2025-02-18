@@ -41,7 +41,7 @@ func CreateReply(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
 
 	reply.UserID = userID
-
+	reply.UserName = r.Context().Value(middlewares.UsernameKey).(string)
 	insertedRes, err := config.DBCollections.Reply.InsertOne(context.Background(), reply)
 	if err != nil {
 		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Create New Reply:"+err.Error())

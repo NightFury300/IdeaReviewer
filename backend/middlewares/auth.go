@@ -11,6 +11,7 @@ import (
 type ContextKey string
 
 const UIDKey ContextKey = "_id"
+const UsernameKey ContextKey = "username"
 
 func VerifyJWT(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -22,7 +23,7 @@ func VerifyJWT(next http.Handler) http.Handler {
 
 		tokenString := cookie.Value
 
-		userID, err := utils.ValidateToken(tokenString)
+		userID,username, err := utils.ValidateToken(tokenString)
 		if err != nil {
 			http.Error(w, "Invalid token payload", http.StatusUnauthorized)
 			return
@@ -30,6 +31,8 @@ func VerifyJWT(next http.Handler) http.Handler {
 		userId, _ := primitive.ObjectIDFromHex(userID)
 
 		ctx := context.WithValue(r.Context(), UIDKey, userId)
+		ctx = context.WithValue(ctx, UsernameKey, username)
+
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

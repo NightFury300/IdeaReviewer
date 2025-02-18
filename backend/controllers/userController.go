@@ -58,20 +58,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	insertedID := res.InsertedID.(primitive.ObjectID)
 	user.ID = insertedID
 
-	refreshToken := utils.GenerateRefreshToken(insertedID.Hex())
-
-	_, updateErr := config.DBCollections.User.UpdateOne(
-		context.Background(),
-		bson.M{"_id": insertedID},
-		bson.M{"$set": bson.M{"refresh_token": refreshToken}},
-	)
-	if updateErr != nil {
-		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to update refresh token:"+updateErr.Error())
-		return
-	}
-
 	user.Password = ""
-	user.RefreshToken = refreshToken
 
 	utils.SendSuccessResponse(w, http.StatusCreated, user)
 }
@@ -108,8 +95,8 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	accessToken := utils.GenerateAccessToken(user.ID.Hex())
-	refreshToken := utils.GenerateRefreshToken(user.ID.Hex())
+	accessToken := utils.GenerateAccessToken(user.ID.Hex(),user.UserName)
+	refreshToken := utils.GenerateRefreshToken(user.ID.Hex(),user.UserName)
 
 	update := bson.M{"$set": bson.M{"refresh_token": refreshToken}}
 	_, err = config.DBCollections.User.UpdateOne(context.Background(), bson.M{"_id": user.ID}, update)
@@ -201,7 +188,7 @@ func RefreshToken(w http.ResponseWriter, r *http.Request) {
 
 	tokenString := cookie.Value
 
-	userID, err := utils.ValidateToken(tokenString)
+	userID,username, err := utils.ValidateToken(tokenString)
 
 	if err != nil {
 		utils.SendErrorResponse(w, http.StatusUnauthorized, "Invalid Refresh Token")
@@ -231,8 +218,8 @@ func RefreshToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	newRefreshToken := utils.GenerateRefreshToken(userID)
-	newAccessToken := utils.GenerateAccessToken(userID)
+	newRefreshToken := utils.GenerateRefreshToken(userID,username)
+	newAccessToken := utils.GenerateAccessToken(userID,username)
 
 	_, updateErr := config.DBCollections.User.UpdateOne(context.Background(), bson.M{"_id": userId}, bson.M{"$set": bson.M{"refresh_token": newRefreshToken}})
 	if updateErr != nil {

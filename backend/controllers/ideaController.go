@@ -34,6 +34,7 @@ func CreateIdea(w http.ResponseWriter, r *http.Request) {
 
 	userId := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
 	idea.UserID = userId
+	idea.UserName = r.Context().Value(middlewares.UsernameKey).(string)
 	idea.CreatedAt = time.Now()
 	idea.UpdatedAt = time.Now()
 

@@ -43,7 +43,7 @@ const deleteIdea = async(ideaId) => {
 }
 
 const getIdea = async(ideaId) => {
-    try{
+    try{        
         let response = await axiosInstance.get(basePath + `/${ideaId}`)
         return response.data
     }catch(error){

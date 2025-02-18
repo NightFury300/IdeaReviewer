@@ -8,6 +8,7 @@ import PostIdea from './pages/PostIdea.jsx'
 import { ProtectedRoute } from './components/index.js'
 import MyIdeas from './pages/MyIdeas.jsx'
 import EditIdea from './pages/EditIdea.jsx'
+import ViewIdea from './pages/ViewIdea.jsx'
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={<Layout/>}>
@@ -15,6 +16,7 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path='login' element={<Login/>}/>
     <Route path='signup' element={<SignUp/>}/>
     <Route path='ideas' element={<ProtectedRoute element={<MyIdeas/>}/>}/>
+    <Route path='ideas/:id' element={<ViewIdea/>}/>
     <Route path='ideas/new' element={<ProtectedRoute element={<PostIdea/>}/>}/>
     <Route path='ideas/edit/:id' element={<ProtectedRoute element={<EditIdea/>}/>}/>
     <Route path='*' element={<Navigate to="/" replace/>}/>

@@ -31,7 +31,7 @@ func CreateComment(w http.ResponseWriter, r *http.Request) {
 
 	userId := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
 	comment.UserID = userId
-
+	comment.UserName = r.Context().Value(middlewares.UsernameKey).(string)
 	insertRes, insertErr := config.DBCollections.Comment.InsertOne(context.Background(), comment)
 	if insertErr != nil {
 		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Create New Comment:"+insertErr.Error())

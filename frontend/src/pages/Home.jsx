@@ -12,7 +12,7 @@ function Home() {
     const fetchIdeas = async () => {
       try {
         const data = await getTopIdeas();        
-        setIdeas(data);
+        setIdeas(data || []);
       } catch (error) {
         console.error('Error fetching ideas:', error);
       }
