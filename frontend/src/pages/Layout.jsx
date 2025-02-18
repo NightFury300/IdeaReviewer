@@ -1,7 +1,6 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, Link, useLocation } from 'react-router-dom'
 import useAuthCheck from '../hooks/useAuthCheck.js';
-import { Link } from 'react-router-dom';
 import AuthButtons from '../components/AuthComponents/AuthButtons.jsx';
 import { useSelector } from 'react-redux';
 import LogoutButton from '../components/AuthComponents/LogoutButton.jsx';
@@ -9,6 +8,11 @@ import LogoutButton from '../components/AuthComponents/LogoutButton.jsx';
 function Layout() {
   const isAuthChecked = useAuthCheck();
   const isLoggedIn = useSelector((state) => state.auth.loginStatus)
+  const location = useLocation();
+
+  const isActive = (path) => {
+    return location.pathname === path ? 'text-blue-500 font-semibold' : 'text-gray-700';
+  };
 
   if (!isAuthChecked) {
     return <div>Loading...</div>;
@@ -17,19 +21,19 @@ function Layout() {
   return  (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <header className="bg-white shadow-md py-4 px-8 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-gray-800">
+        <Link to="/" className="text-2xl font-bold text-gray-800 hover:text-blue-500 transition">
           IdeaReviewer
         </Link>
         <nav className="flex gap-6">
           <Link
             to="/"
-            className="text-gray-700 hover:text-blue-500 transition"
+            className={`${isActive('/')} hover:text-blue-500 transition`}
           >
             Home
           </Link>
           <Link
             to="/profile"
-            className="text-gray-700 hover:text-blue-500 transition"
+            className={`${isActive('/profile')} hover:text-blue-500 transition`}
           >
             My Profile
           </Link>
