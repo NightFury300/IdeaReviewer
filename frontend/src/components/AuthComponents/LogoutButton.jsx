@@ -4,6 +4,7 @@ import { logout } from '../../store/authSlice';
 import { logoutUser } from '../../services/userAPI';
 import AuthButtons from './AuthButtons';
 import { useSelector } from 'react-redux';
+import { LogOut } from 'lucide-react';
 
 function LogoutButton() {
     const dispatch = useDispatch();
@@ -23,8 +24,8 @@ function LogoutButton() {
     }
   
   return (
-    <button onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 cursor-pointer">
-        Logout
+    <button onClick={handleLogout} className="flex bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 cursor-pointer">
+        <LogOut size={24} /> <h1>Logout</h1>
     </button>
   )
 }

@@ -1,3 +1,4 @@
+import { LogIn, PenSquare } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const AuthButtons = () => {
@@ -6,23 +7,23 @@ const AuthButtons = () => {
     <div className="flex gap-4 mb-6">
   <Link
     to="/login"
-    className={`px-4 py-2 rounded-lg font-medium transition duration-200 cursor-pointer ${
+    className={`flex px-4 py-2 rounded-lg font-medium transition duration-200 cursor-pointer ${
       location.pathname === "/login"
         ? "bg-blue-500 text-white"
         : "bg-gray-200 hover:bg-gray-300"
     }`}
   >
-    Login
+    <LogIn size={24}/><h1>Login</h1>
   </Link>
   <Link
     to="/signup"
-    className={`px-4 py-2 rounded-lg font-medium transition duration-200 cursor-pointer ${
+    className={`flex px-4 py-2 rounded-lg font-medium transition duration-200 cursor-pointer ${
       location.pathname === "/signup"
         ? "bg-blue-500 text-white"
         : "bg-gray-200 hover:bg-gray-300"
     }`}
   >
-    Sign Up
+    <PenSquare size={24}/><h1>Sign Up</h1>
   </Link>
 </div>
 

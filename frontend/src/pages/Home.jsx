@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import IdeaCard from '../components/IdeaCard.jsx';
 import { getTopIdeas } from '../services/ideasAPI.js';
-import {Plus} from "lucide-react"
+import { SquarePlus} from "lucide-react"
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
@@ -22,14 +22,14 @@ function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-200 p-8">
       <div className="flex justify-between mb-6">
       <h1 className="text-2xl font-bold mb-6">Home</h1>
         <button
           onClick={() => navigate("/ideas/new")}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 shadow-md transition"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 shadow-md transition cursor-pointer"
         >
-          <Plus size={20} /> Post Idea
+          <SquarePlus size={24} /> Post Idea
         </button>
       </div>
 

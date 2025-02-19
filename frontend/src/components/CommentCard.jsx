@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getReplies, createReply } from '../services/replyAPI.js';
 import { deleteComment } from '../services/commentAPI.js';
 import ReplyCard from './ReplyCard.jsx';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import UserTag from './UserTag.jsx';
+import { LogIn, MessageSquareReply, Trash } from 'lucide-react';
 
 function CommentCard({ comment, onDelete }) {
   const [showReplies, setShowReplies] = useState(false);
@@ -67,17 +68,18 @@ function CommentCard({ comment, onDelete }) {
         className="flex justify-between items-center cursor-pointer transition-all duration-200 hover:text-gray-700"
         onClick={fetchReplies}
       >
-        <p className="text-gray-800 transition-all duration-200">-{comment.text}</p>
+        
+        <p className="text-gray-800 transition-all duration-200">- {comment.text}</p>
 
         {comment.user_id === currentUserId && (
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDeleteComment();
-            }}
-            className="text-red-500 text-sm bg-gray-200 px-2 py-1 rounded-md ml-2 cursor-pointer transition-all duration-200 hover:bg-gray-300"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDeleteComment();
+          }}
+          className="text-red-500 text-sm bg-gray-200 px-2 py-1 rounded-md ml-2 cursor-pointer transition-all duration-200 hover:bg-gray-300"
           >
-            Delete
+          <Trash size={18}/>
           </button>
         )}
       </div>
@@ -105,17 +107,17 @@ function CommentCard({ comment, onDelete }) {
               />
               <button
                 onClick={handleAddReply}
-                className="mt-2 text-white bg-blue-500 px-4 py-2 rounded-md cursor-pointer transition-all duration-200 hover:bg-blue-600"
+                className="flex justify-center items-center mt-2 text-white bg-blue-500 px-4 py-2 rounded-md cursor-pointer transition-all duration-200 hover:bg-blue-600"
               >
-                Add Reply
+                <MessageSquareReply size={24}/>Add Reply
               </button>
             </div>
           ) : (
             <button
               onClick={() => navigate('/login')}
-              className="mt-2 text-white bg-blue-500 px-4 py-2 rounded-md cursor-pointer transition-all duration-200 hover:bg-blue-600"
+              className="flex justify-center items-center mt-2 text-white bg-blue-500 px-4 py-2 rounded-md cursor-pointer transition-all duration-200 hover:bg-blue-600"
             >
-              Login to Reply
+              <LogIn size={24}/>Login to Reply
             </button>
           )}
         </div>

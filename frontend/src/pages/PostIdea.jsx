@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createIdea } from "../services/ideasAPI.js";
+import { SquarePlus, X } from "lucide-react";
 
 function PostIdea() {
   const [title, setTitle] = useState("");
@@ -24,7 +25,7 @@ function PostIdea() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-200 p-6">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
         <h2 className="text-2xl font-bold mb-4 text-center">Post a New Idea</h2>
         
@@ -50,13 +51,13 @@ function PostIdea() {
             onClick={() => navigate(-1)}
             className="bg-gray-300 hover:bg-gray-400 text-black font-medium py-2 px-4 rounded-lg transition duration-200 cursor-pointer"
           >
-            Cancel
+            <X size={24}/>
           </button>
           <button
             onClick={handlePostIdea}
             className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200 cursor-pointer"
           >
-            Post Idea
+            <SquarePlus size={24}/>
           </button>
         </div>
       </div>

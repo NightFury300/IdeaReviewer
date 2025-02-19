@@ -4,6 +4,7 @@ import useAuthCheck from '../hooks/useAuthCheck.js';
 import AuthButtons from '../components/AuthComponents/AuthButtons.jsx';
 import { useSelector } from 'react-redux';
 import LogoutButton from '../components/AuthComponents/LogoutButton.jsx';
+import { Lightbulb } from 'lucide-react';
 
 function Layout() {
   const isAuthChecked = useAuthCheck();
@@ -11,7 +12,7 @@ function Layout() {
   const location = useLocation();
 
   const isActive = (path) => {
-    return location.pathname === path ? 'text-blue-500 font-semibold' : 'text-gray-700';
+    return location.pathname === path ? 'text-yellow-400 font-semibold' : 'text-gray-700';
   };
 
   if (!isAuthChecked) {
@@ -21,19 +22,26 @@ function Layout() {
   return  (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <header className="bg-white shadow-md py-4 px-8 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-gray-800 hover:text-blue-500 transition">
-          IdeaReviewer
-        </Link>
+      <Link to="/" className="flex flex-col items-start text-3xl font-extrabold text-gray-800 tracking-tight hover:text-yellow-400 transition">
+        <div className="flex items-center">
+          <Lightbulb size={36} className="text-yellow-400 mr-2" />
+            IdeaReviewer
+        </div>
+        <span className="text-xs font-semibold text-gray-600 tracking-wide ml-10">
+          Discover & Share Ideas
+        </span>
+      </Link>
+
         <nav className="flex gap-6">
           <Link
             to="/"
-            className={`${isActive('/')} hover:text-blue-500 transition`}
+            className={`${isActive('/')} hover:text-yellow-400 transition`}
           >
             Home
           </Link>
           <Link
             to="/ideas"
-            className={`${isActive('/ideas')} hover:text-blue-500 transition`}
+            className={`${isActive('/ideas')} hover:text-yellow-400 transition`}
           >
             My Ideas
           </Link>

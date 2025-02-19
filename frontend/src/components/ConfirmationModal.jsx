@@ -1,3 +1,4 @@
+import { Trash2, X } from 'lucide-react';
 import React from 'react';
 
 function ConfirmationModal({ isOpen, onCancel, onConfirm }) {
@@ -13,13 +14,13 @@ function ConfirmationModal({ isOpen, onCancel, onConfirm }) {
             onClick={onCancel}
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded cursor-pointer"
           >
-            Cancel
+            <X size={24}/>
           </button>
           <button
             onClick={onConfirm}
             className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
           >
-            Delete
+            <Trash2 size={24}/>
           </button>
         </div>
       </div>

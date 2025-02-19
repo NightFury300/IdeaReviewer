@@ -1,6 +1,7 @@
 import React from 'react'
 import { registerUser } from '../services/userAPI';
 import { useNavigate } from 'react-router-dom';
+import { PenSquare } from 'lucide-react';
 
 function SignUp() {
   const [email, setEmail] = React.useState('');
@@ -66,9 +67,9 @@ function SignUp() {
       />
       <button
         type="submit"
-        className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+        className="flex justify-center items-center bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
       >
-        Register
+        <PenSquare size={24}/>Register
       </button>
     </form>
     {signupSuccess && (

@@ -1,12 +1,12 @@
 import React from 'react'
-import {User} from "lucide-react"
+import {AtSign} from "lucide-react"
 
 function UserTag({username}) {
   return (
-    <div className="flex items-center space-x-2 text-gray-600 mb-2">
-          <User size={20} />
-          <span className="text-sm font-medium">{username || 'Anonymous'}</span>
-        </div>
+    <div className="flex items-center space-x-0.5 text-gray-600 mb-2">
+      <AtSign size={18} />
+      <span className="text-sm font-bold">{username || 'Anonymous'}</span>
+    </div>
   )
 }
 

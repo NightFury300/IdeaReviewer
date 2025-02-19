@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { login } from '../store/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { loginUser } from '../services/userAPI'
+import { LogIn } from 'lucide-react'
 
 function Login() {
   const dispatch = useDispatch()
@@ -44,9 +45,9 @@ function Login() {
     />
     <button
       type="submit"
-      className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+      className="flex justify-center items-center bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
     >
-      Login
+      <LogIn size={24}/>Login
     </button>
   </form>
   {loginError && <div className="text-red-500 font-medium">{loginError}</div>}
