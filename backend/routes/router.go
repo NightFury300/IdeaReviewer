@@ -19,6 +19,6 @@ func InitRouter() *mux.Router {
 	r.HandleFunc("/api/healthcheck", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`{"status":"ok"}`))
-	}).Methods("GET")
+	}).Methods(http.MethodGet, http.MethodHead)
 	return r
 }
