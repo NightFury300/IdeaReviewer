@@ -25,7 +25,7 @@ function Layout() {
       <Link to="/" className="flex flex-col items-start text-3xl font-extrabold text-gray-800 tracking-tight hover:text-yellow-400 transition">
         <div className="flex items-center">
           <Lightbulb size={36} className="text-yellow-400 mr-2" />
-            IdeaReviewer
+            IdeaHub
         </div>
         <span className="text-xs font-semibold text-gray-600 tracking-wide ml-10">
           Discover & Share Ideas
