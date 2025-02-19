@@ -254,6 +254,7 @@ func RefreshToken(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetProfile(w http.ResponseWriter, r *http.Request) {
+	log.Println("PINGED")
 	userID := r.Context().Value(middlewares.UIDKey).(primitive.ObjectID)
 
 	var response struct {
