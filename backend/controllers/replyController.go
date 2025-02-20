@@ -77,7 +77,7 @@ func GetReplies(w http.ResponseWriter, r *http.Request) {
 			utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to Fetch Like Count:"+err.Error())
 			return
 		}
-*/
+		*/
 		/*replyWithLikes := map[string]interface{}{
 			"reply":     reply,
 			//"likeCount": likeCount,
