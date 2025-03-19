@@ -21,6 +21,10 @@ function Layout() {
 
   return  (
     <div className="min-h-screen flex flex-col bg-gray-50">
+    {/* Warning Message Banner */}
+    <div className="w-full bg-red-600 text-white text-center py-2 font-semibold">
+        Please note: This website is hosted on a free platform. The first time you access the site or after some inactivity, it may take a minute for the backend to start. If something isn't working right away, kindly try again in a minute or less.
+      </div>
       <header className="bg-white shadow-md py-4 px-8 flex justify-between items-center">
       <Link to="/" className="flex flex-col items-start text-3xl font-extrabold text-gray-800 tracking-tight hover:text-yellow-400 transition">
         <div className="flex items-center">
