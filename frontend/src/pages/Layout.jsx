@@ -16,7 +16,13 @@ function Layout() {
   };
 
   if (!isAuthChecked) {
-    return <div>Loading...</div>;
+    return  <>
+              {/* Warning Message Banner */}
+              <div className="w-full bg-red-600 text-white text-center py-2 font-semibold">
+                Please note: This website is hosted on a free platform. The first time you access the site or after some inactivity, it may take a minute for the backend to start. If something isn't working right away, kindly try again in a minute or less.
+              </div>
+              <div>Loading...</div>
+            </>;
   }
 
   return  (
